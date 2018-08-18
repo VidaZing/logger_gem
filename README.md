@@ -23,7 +23,7 @@ Customized ruby logging with [TwP/logging](https://github.com/TwP/logging). Uses
 ```ruby
 require 'vidazing_logger'
 
-logger = VidazingLogger.new
+logger = VidazingLogger.logger("OPTIONAL_LOGGER_NAME")
 ```
 
 ## Under the hood
