@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+require 'vidazing_logger'
+
+require 'optparse'
+require 'ostruct'
+
+class VidazingOptions
+  LEVEL_ALIASES = { 'd' => 'debug', 'i' => 'info', 'w' => 'warn', 'e' => 'error', 'f' => 'fatal' }
+
+  def self.parse(args)
+    options = OpenStruct.new
+    options.level = 'info'
+    options.clean = false
+
+    options_parser = OptionParser.new do |opts|
+      opts.banner = "Usage: vidazing_logger [options] \"Message\""
+
+      opts.separator ""
+      opts.separator "Specific options:"
+
+      level_list = LEVEL_ALIASES.flatten.join(',')
+      opts.on("-l", "--level LEVEL", LEVEL_ALIASES.values, LEVEL_ALIASES, "Select log level",
+              "  (#{level_list})") do |level|
+        options.level = level
+      end
+
+      opts.on_tail("-c", "--clean", "Remove the logs/ directory") do
+        options.clean = true
+      end
+    end
+
+    options_parser.parse!(args)
+    options
+  end
+end
+
+options = VidazingOptions.parse(ARGV)
+
+if options.clean
+  puts "Cleaning the logs/ directory"
+  VidazingLogger.clean
+end
+
+unless ARGV.empty?
+  message = ARGV.join(' ')
+
+  log = VidazingLogger.logger
+  log.public_send(options.level, message)
+end

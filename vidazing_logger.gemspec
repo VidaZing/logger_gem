@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["VidaZing@gmail.com"]
   s.homepage    = "https://github.com/VidaZing/logger_gem"
   s.summary     = "Custom logging for VidaZing."
+  s.executables << 'vidazing_logger'
 
   s.required_ruby_version     = '>= 1.9.3'
 
@@ -22,3 +23,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 0'
   s.add_development_dependency 'rainbow', '3.0.0'
 end
+
