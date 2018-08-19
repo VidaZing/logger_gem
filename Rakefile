@@ -1,5 +1,6 @@
 require 'rainbow/refinement'
 using Rainbow
+require 'rake/testtask'
 
 GEM_NAME = 'vidazing_logger'
 
@@ -27,8 +28,41 @@ task :uninstall do
   system "gem uninstall -xq #{GEM_NAME}"
 end
 
-desc "Rebuilds on file changes"
-task :"auto-install" do
-  puts "Rebuilding on file changes. Ignores .git/ and gems created. Watches every 1 seconds".bright.magenta
-  system "fswatch -0 -e .git/ -e *.gem -l 1 . | xargs -0 -I {} sh -c \"echo '{}' && rake uninstall install\""
+Rake::TestTask.new do |t|
+  t.libs << 'test'
+  t.test_files = FileList['test/test*.rb']
+  t.verbose = true
+end
+
+namespace :loop do
+  def looper?
+    puts "Checking for 'fswatch' to monitor files".blue
+
+    has_fswatch = ! `which fswatch`.empty?
+
+    abort('fswatch is NOT installed. Visit https://github.com/emcrisostomo/fswatch'.bright.red) unless has_fswatch
+    puts('fswatch is installed.'.bright.green) if has_fswatch
+  end
+
+  def looping(cmd)
+    fswatch_cmd = "fswatch -0 -e .git/ -e *.gem -e logs -l 1 ."
+    xargs_cmd = "xargs -0 -I {} sh -c \"echo 'File: {}' && %s\""
+    looping_cmd = "#{fswatch_cmd} |  #{xargs_cmd}"
+
+    system "#{looping_cmd}" % cmd
+  end
+
+  desc "Repeatedly installs the gem on file changes"
+  task :install do
+    looper?
+    puts "Rebuilding on file changes. Ignores .git/, logs/,  and gems created. Watches every 1 seconds".blue
+    looping("rake uninstall install")
+  end
+
+  desc "Repeatedly runs tests on file changes"
+  task :test do
+    looper?
+    puts "Running tests on file changes. Ignores .git/, logs/, and gems created. Watches every 1 seconds".blue
+    looping("rake test")
+  end
 end
