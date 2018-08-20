@@ -1,9 +1,14 @@
 require 'logging'
 
-# Refactor this with the Stdout appender should the need arise.
+# Determines how to log messages. Attaches to Logging.logger
+# @api private
 module VidazingLogger::Appenders
+  # Appender writing to STDERR and 'logs/error.log'
+  # @api private
   module Stderr
     class << self
+      private
+
       # ----- BUILD STDERR + LOG -----
 
       # Logging holds the color scheme reference

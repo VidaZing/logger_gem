@@ -28,4 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry', '0.10.4'
   s.add_development_dependency 'pry-byebug', '3.6.0'
   s.add_development_dependency 'byebug', '10.0.2'
+  s.add_development_dependency 'yard', '0.9.16'
 end

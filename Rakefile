@@ -28,6 +28,19 @@ task :uninstall do
   system "gem uninstall -xq #{GEM_NAME}"
 end
 
+namespace :doc do
+  desc "Find undocumented code"
+  task :coverage do
+    puts "Documentation coverage:".blue
+    system "yard stats --list-undoc"
+  end
+
+  desc "See local documentation at http://localhost:8808"
+  task :serve do
+    system "yard server --reload"
+  end
+end
+
 Rake::TestTask.new do |t|
   t.libs << 'test'
   t.test_files = FileList['test/test*.rb']
@@ -45,24 +58,33 @@ namespace :loop do
   end
 
   def looping(cmd)
-    fswatch_cmd = "fswatch -0 -e .git/ -e *.gem -e logs -l 1 ."
+    fswatch_cmd = "fswatch -0 -e .git/ -e *.gem -e logs -e .yardoc -l 1 ."
     xargs_cmd = "xargs -0 -I {} sh -c \"echo 'File: {}' && %s\""
     looping_cmd = "#{fswatch_cmd} |  #{xargs_cmd}"
 
     system "#{looping_cmd}" % cmd
   end
 
+  IGNORED_MESSAGE = "Ignores .git/, logs/, .yardoc/, and gems created. Watches every 1 seconds"
+
   desc "Repeatedly installs the gem on file changes"
   task :install do
     looper?
-    puts "Rebuilding on file changes. Ignores .git/, logs/,  and gems created. Watches every 1 seconds".blue
+    puts "Rebuilding on file changes. #{IGNORED_MESSAGE}".blue
     looping("rake uninstall install")
   end
 
   desc "Repeatedly runs tests on file changes"
   task :test do
     looper?
-    puts "Running tests on file changes. Ignores .git/, logs/, and gems created. Watches every 1 seconds".blue
+    puts "Running tests on file changes. #{IGNORED_MESSAGE}".blue
     looping("rake test")
+  end
+
+  desc "Repeatedly runs tests on file changes"
+  task :"doc:coverage" do
+    looper?
+    puts "Showing undocumented code on file changes. #{IGNORED_MESSAGE}".blue
+    looping("rake doc:coverage")
   end
 end

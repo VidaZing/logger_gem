@@ -1,9 +1,12 @@
 require 'logging'
 
-# Refactor this with the Stderr appender should the need arise.
 module VidazingLogger::Appenders
+  # Appender writing to STDOUT and 'logs/build.log'
+  # @api private
   module Stdout
     class << self
+      private
+
       #----- BUILD STDOUT + LOG -----
 
       # Logging holds the color scheme reference
