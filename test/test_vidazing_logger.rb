@@ -1,6 +1,11 @@
 require "./lib/vidazing_logger.rb"
 require "test/unit"
 
+# Test Coverage
+require 'coveralls'
+Coveralls.wear!
+
+
 class TestNAME < Test::Unit::TestCase
 
   LOG_DIR = "logs"
