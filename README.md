@@ -1,4 +1,7 @@
 # logger-gem
+
+[![Build Status](https://travis-ci.org/VidaZing/logger_gem.svg?branch=master)](https://travis-ci.org/VidaZing/logger_gem)
+
 VidaZing logging strategy using [TwP/logging](https://github.com/TwP/logging).
 
 Writes to rolling log files and the corresponding IO pipe.
