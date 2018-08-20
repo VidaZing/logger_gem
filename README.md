@@ -1,6 +1,7 @@
 # logger-gem
 
 [![Build Status](https://travis-ci.org/VidaZing/logger_gem.svg?branch=master)](https://travis-ci.org/VidaZing/logger_gem)
+[![Gem Version](https://badge.fury.io/rb/vidazing_logger.svg)](https://badge.fury.io/rb/vidazing_logger)
 
 VidaZing logging strategy using [TwP/logging](https://github.com/TwP/logging).
 
