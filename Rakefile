@@ -2,29 +2,43 @@ require 'rainbow/refinement'
 using Rainbow
 require 'rake/testtask'
 
-GEM_NAME = 'vidazing_logger'
+$LOAD_PATH.push File.expand_path("../lib", __FILE__)
+require "vidazing_logger/version"
+VERSION = VidazingLogger::VERSION
 
-desc "Remove #{GEM_NAME} && Gemfile.lock"
+GEM_NAME = "vidazing_logger"
+
+# IMPORTANT: Color can't be used for `system` commands.
+GEM_NAME_VERSION = "#{GEM_NAME}-#{VERSION}"
+GEM_ARTIFACT = "#{GEM_NAME_VERSION}.gem"
+
+desc "Remove #{GEM_ARTIFACT} && Gemfile.lock"
 task :clean do
-  puts "Remove #{GEM_NAME} && Gemfile.lock".blue
+  puts "Removing #{GEM_ARTIFACT} && Gemfile.lock".blue
   system "rm -f *.gem Gemfile.lock"
 end
 
-desc "Build #{GEM_NAME}"
+desc "Build #{GEM_NAME_VERSION}"
 task :build => :clean do
-  puts "Building #{GEM_NAME}".blue
+  puts "Building #{GEM_NAME_VERSION}".blue
   system "gem build #{GEM_NAME}.gemspec"
 end
 
-desc "Installs #{GEM_NAME}"
+desc "Publish #{GEM_ARTIFACT}"
+task :publish do
+  puts "Publishing #{GEM_NAME_VERSION}".blue
+  system "gem push #{GEM_NAME_VERSION}.gem"
+end
+
+desc "Installs #{GEM_ARTIFACT}"
 task :install => :build do
-  puts "Installing #{GEM_NAME}".blue
+  puts "Installing #{GEM_ARTIFACT}".blue
   system "gem install #{GEM_NAME}"
 end
 
-desc "Uninstalls #{GEM_NAME}"
+desc "Uninstalls #{GEM_ARTIFACT}"
 task :uninstall do
-  puts "UNINSTALLING #{GEM_NAME}".inverse.blue
+  puts "UNINSTALLING #{GEM_ARTIFACT}".inverse.blue
   system "gem uninstall -xq #{GEM_NAME}"
 end
 
@@ -87,7 +101,7 @@ namespace :loop do
     looping("rake test")
   end
 
-  desc "Repeatedly runs tests on file changes"
+  desc "Repeatedly show documentation coverage on file changes"
   task :"doc:coverage" do
     looper?
     puts "Showing undocumented code on file changes. #{IGNORED_MESSAGE}".blue
