@@ -24,6 +24,8 @@ task :build => :clean do
   system "gem build #{GEM_NAME}.gemspec"
 end
 
+task :default => ["build"]
+
 desc "Publish #{GEM_ARTIFACT}"
 task :publish do
   puts "Publishing #{GEM_NAME_VERSION}".blue
