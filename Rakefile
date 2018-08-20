@@ -29,6 +29,12 @@ task :uninstall do
 end
 
 namespace :doc do
+  desc "Build documentation into 'doc/'"
+  task :build do
+    puts "Building documentation into 'doc/':".blue
+    system "yard"
+  end
+
   desc "Find undocumented code"
   task :coverage do
     puts "Documentation coverage:".blue
