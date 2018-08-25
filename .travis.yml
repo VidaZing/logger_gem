@@ -3,8 +3,7 @@ language: ruby
 rvm:
   - 2.5.1
 
-matrix:
-  include:
-    - name: "Run tests"
-  script:
-    - bundle exec rake test
+script:
+  - bundle exec rake build
+  - bundle exec rake doc:build
+  - bundle exec rake test
