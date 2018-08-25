@@ -8,8 +8,8 @@ VidaZing logging strategy using [TwP/logging](https://github.com/TwP/logging).
 
 Writes to rolling log files and the corresponding IO pipe.
 
-* <span style="color:red">Red</span> timestamps: `logs/error.log` + stderr.
-* <span style="color:blue">Blue</span> timestamps: `logs/build.log` + stdout.
+* <img src="http://medyk.org/colors/ff8787.png" style="border: 1px solid black" width="20" height="20" /> timestamps for: `logs/error.log` + stderr.
+* <img src="http://medyk.org/colors/87d7ff.png" style="border: 1px solid black" width="20" height="20" /> timestamps for: `logs/build.log` + stdout.
 
 1. [**Installation**](#installation)
 2. [**Usage**](#usage)
