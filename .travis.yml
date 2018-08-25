@@ -2,8 +2,13 @@ language: ruby
 
 rvm:
   - 2.5.1
+before_install:
+  - gem install bundler -v 1.16.1
 
 script:
   - bundle exec rake build
   - bundle exec rake doc:build
   - bundle exec rake test
+
+after_script:
+  - bundle exec rake coveralls:push

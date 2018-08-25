@@ -1,6 +1,7 @@
 require 'rainbow/refinement'
 using Rainbow
 require 'rake/testtask'
+require 'coveralls/rake/task'
 
 $LOAD_PATH.push File.expand_path("../lib", __FILE__)
 require "vidazing_logger/version"
@@ -110,3 +111,5 @@ namespace :loop do
     looping("rake doc:coverage")
   end
 end
+
+Coveralls::RakeTask.new
