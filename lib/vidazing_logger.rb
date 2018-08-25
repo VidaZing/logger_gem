@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'vidazing_logger/version'
 require 'vidazing_logger/appenders/stdout'
 require 'vidazing_logger/appenders/stderr'
@@ -10,13 +12,12 @@ require 'logging'
 # @since 0.1.0
 module VidazingLogger
   class << self
-
     # [String]
-    LOG_DIR = "logs"
+    LOG_DIR = 'logs'
 
     # Creates the 'logs/' directory
     def initialize
-      Dir.mkdir(LOG_DIR) unless Dir.exists?(LOG_DIR)
+      Dir.mkdir(LOG_DIR) unless Dir.exist?(LOG_DIR)
     end
 
     # Deletes the 'logs/' directory

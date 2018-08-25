@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'vidazing_logger'
 
@@ -6,7 +7,7 @@ require 'optparse'
 require 'ostruct'
 
 class VidazingOptions
-  LEVEL_ALIASES = { 'd' => 'debug', 'i' => 'info', 'w' => 'warn', 'e' => 'error', 'f' => 'fatal' }
+  LEVEL_ALIASES = { 'd' => 'debug', 'i' => 'info', 'w' => 'warn', 'e' => 'error', 'f' => 'fatal' }.freeze
 
   def self.parse(args)
     options = OpenStruct.new
@@ -14,18 +15,18 @@ class VidazingOptions
     options.clean = false
 
     options_parser = OptionParser.new do |opts|
-      opts.banner = "Usage: vidazing_logger [options] \"Message\""
+      opts.banner = 'Usage: vidazing_logger [options] "Message"'
 
-      opts.separator ""
-      opts.separator "Specific options:"
+      opts.separator ''
+      opts.separator 'Specific options:'
 
       level_list = LEVEL_ALIASES.flatten.join(',')
-      opts.on("-l", "--level LEVEL", LEVEL_ALIASES.values, LEVEL_ALIASES, "Select log level",
+      opts.on('-l', '--level LEVEL', LEVEL_ALIASES.values, LEVEL_ALIASES, 'Select log level',
               "  (#{level_list})") do |level|
         options.level = level
       end
 
-      opts.on_tail("-c", "--clean", "Remove the logs/ directory") do
+      opts.on_tail('-c', '--clean', 'Remove the logs/ directory') do
         options.clean = true
       end
     end
@@ -38,7 +39,7 @@ end
 options = VidazingOptions.parse(ARGV)
 
 if options.clean
-  puts "Cleaning the logs/ directory"
+  puts 'Cleaning the logs/ directory'
   VidazingLogger.clean
 end
 
