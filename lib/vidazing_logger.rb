@@ -31,7 +31,6 @@ module VidazingLogger
     # @param name [String] Logger name used in messages
     # @return [Logging.logger] See https://github.com/TwP/logging/blob/master/lib/logging/logger.rb
     def logger(name = 'VidaZing')
-      require 'pry'; binding.pry
       VidazingLogger.initialize
 
       log = Logging.logger[name]
