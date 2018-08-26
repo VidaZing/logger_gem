@@ -1,5 +1,7 @@
 AllCops:
   TargetRubyVersion: 2.5.1
+  Exclude:
+    - 'bundle/**/*'
 
 Metrics/BlockLength:
   Exclude:
