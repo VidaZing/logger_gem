@@ -22,6 +22,12 @@ task :clean do
 end
 
 desc "Build #{GEM_NAME_VERSION}"
+task "build-dev": :clean do
+  puts "Building #{GEM_NAME_VERSION}".blue
+  system "gem build #{GEM_NAME}.gemspec"
+end
+
+desc "Build #{GEM_NAME_VERSION}"
 task build: :clean do
   puts "Building #{GEM_NAME_VERSION}".blue
   system "gem build #{GEM_NAME}.gemspec"
@@ -72,13 +78,16 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-namespace :loop do
+namespace :loop do # rubocop:disable Metrics/BlockLength
   def looper?
     puts "Checking for 'fswatch' to monitor files".blue
 
     has_fswatch = !`which fswatch`.empty?
 
-    abort('fswatch is NOT installed. Visit https://github.com/emcrisostomo/fswatch'.bright.red) unless has_fswatch
+    unless has_fswatch
+      abort('fswatch is NOT installed. Visit https://github.com/emcrisostomo/fswatch'.bright.red)
+    end
+
     puts('fswatch is installed.'.bright.green) if has_fswatch
   end
 
@@ -90,7 +99,8 @@ namespace :loop do
     system format(looping_cmd.to_s, cmd)
   end
 
-  IGNORED_MESSAGE = 'Ignores .git/, logs/, .yardoc/, and gems created. Watches every 1 seconds'
+  IGNORED_MESSAGE = 'Ignores .git/, logs/, .yardoc/, and gems created.'\
+                    'Watches every 1 seconds'
 
   desc 'Repeatedly installs the gem on file changes'
   task :install do

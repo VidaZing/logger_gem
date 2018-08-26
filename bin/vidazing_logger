@@ -6,39 +6,51 @@ require 'vidazing_logger'
 require 'optparse'
 require 'ostruct'
 
+# Handles command line options for the vidazing_logger binary.
+# See `vidazing_logger --help`
+#
+# @since 0.1.0
 class VidazingOptions
-  LEVEL_ALIASES = { 'd' => 'debug', 'i' => 'info', 'w' => 'warn', 'e' => 'error', 'f' => 'fatal' }.freeze
+  attr_reader :level, :clean
 
-  def self.parse(args)
-    options = OpenStruct.new
-    options.level = 'info'
-    options.clean = false
+  def initialize
+    @level = 'info'
+    @clean = false
+    @options_parser = create_options_parser
+  end
 
-    options_parser = OptionParser.new do |opts|
+  def create_options_parser # rubocop:disable Metrics/MethodLength
+    OptionParser.new do |opts|
       opts.banner = 'Usage: vidazing_logger [options] "Message"'
 
       opts.separator ''
       opts.separator 'Specific options:'
 
-      level_list = LEVEL_ALIASES.flatten.join(',')
-      opts.on('-l', '--level LEVEL', LEVEL_ALIASES.values, LEVEL_ALIASES, 'Select log level',
-              "  (#{level_list})") do |level|
-        options.level = level
+      level_aliases = { 'd' => 'debug', 'i' => 'info', 'w' => 'warn',
+                        'e' => 'error', 'f' => 'fatal' }.freeze
+      level_list = level_aliases.flatten.join(',')
+
+      opts.on('-l', '--level LEVEL', level_aliases.values, level_aliases,
+              'Select log level', "  (#{level_list})") do |level|
+
+        @level = level
       end
 
       opts.on_tail('-c', '--clean', 'Remove the logs/ directory') do
-        options.clean = true
+        @clean = true
       end
     end
+  end
 
-    options_parser.parse!(args)
-    options
+  def parse(args)
+    @options_parser.parse!(args)
   end
 end
 
-options = VidazingOptions.parse(ARGV)
+vidazing_options = VidazingOptions.new
+vidazing_options.parse(ARGV)
 
-if options.clean
+if vidazing_options.clean
   puts 'Cleaning the logs/ directory'
   VidazingLogger.clean
 end
@@ -47,5 +59,5 @@ unless ARGV.empty?
   message = ARGV.join(' ')
 
   log = VidazingLogger.logger
-  log.public_send(options.level, message)
+  log.public_send(vidazing_options.level, message)
 end

@@ -3,7 +3,7 @@
 $LOAD_PATH.push File.expand_path('lib', __dir__)
 require 'vidazing_logger/version'
 
-Gem::Specification.new do |s|
+Gem::Specification.new do |s| # rubocop:disable Metrics/BlockLength
   s.name        = 'vidazing_logger'
   s.version     = VidazingLogger::VERSION
   s.platform    = Gem::Platform::RUBY
@@ -14,12 +14,15 @@ Gem::Specification.new do |s|
   s.summary     = 'Custom logging for VidaZing.'
   s.executables << 'vidazing_logger'
 
-  s.rubygems_version = '2.5.2'
-  s.required_ruby_version = '>= 1.9.3'
+  s.rubygems_version = '2.7.7'
 
-  s.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec)/}) }
+  # rubocop:disable Gemspec/RequiredRubyVersion
+  s.required_ruby_version = '>= 2.2.0'
+  # rubocop:enable Gemspec/RequiredRubyVersion
+
+  s.files         = `git ls-files -z`.split("\x0").reject \
+                     { |f| f.match(%r{^(test|spec)/}) }
   s.require_paths = ['lib']
-  # s.test_files = ["test/test_vidazing_logger.rb"]
 
   s.add_runtime_dependency('logging', '2.2.2')
 
