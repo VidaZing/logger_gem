@@ -15,13 +15,13 @@ GEM_NAME = 'vidazing_logger'
 GEM_NAME_VERSION = "#{GEM_NAME}-#{VERSION}"
 GEM_ARTIFACT = "#{GEM_NAME_VERSION}.gem"
 
-desc "Remove #{GEM_ARTIFACT} && Gemfile.lock"
+desc "Remove #{GEM_ARTIFACT} && Gemfile.lock".blue
 task :clean do
   puts "Removing #{GEM_ARTIFACT} && Gemfile.lock".blue
   system 'rm -f *.gem Gemfile.lock'
 end
 
-desc "Build #{GEM_NAME_VERSION}"
+desc "Build #{GEM_NAME_VERSION}".blue
 task build: :clean do
   puts "Building #{GEM_NAME_VERSION}".blue
   system "gem build #{GEM_NAME}.gemspec"
@@ -29,19 +29,19 @@ end
 
 task default: ['build']
 
-desc "Publish #{GEM_ARTIFACT}"
+desc "Publish #{GEM_ARTIFACT}".blue
 task :publish do
   puts "Publishing #{GEM_NAME_VERSION}".blue
   system "gem push #{GEM_NAME_VERSION}.gem"
 end
 
-desc "Installs #{GEM_ARTIFACT}"
+desc "Installs #{GEM_ARTIFACT}".blue
 task install: :build do
   puts "Installing #{GEM_ARTIFACT}".blue
   system "gem install #{GEM_NAME}"
 end
 
-desc "Uninstalls #{GEM_ARTIFACT}"
+desc "Uninstalls #{GEM_ARTIFACT}".blue
 task :uninstall do
   puts "UNINSTALLING #{GEM_ARTIFACT}".inverse.blue
   system "gem uninstall -xq #{GEM_NAME}"
