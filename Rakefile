@@ -22,12 +22,6 @@ task :clean do
 end
 
 desc "Build #{GEM_NAME_VERSION}"
-task "build-dev": :clean do
-  puts "Building #{GEM_NAME_VERSION}".blue
-  system "gem build #{GEM_NAME}.gemspec"
-end
-
-desc "Build #{GEM_NAME_VERSION}"
 task build: :clean do
   puts "Building #{GEM_NAME_VERSION}".blue
   system "gem build #{GEM_NAME}.gemspec"
@@ -51,6 +45,20 @@ desc "Uninstalls #{GEM_ARTIFACT}"
 task :uninstall do
   puts "UNINSTALLING #{GEM_ARTIFACT}".inverse.blue
   system "gem uninstall -xq #{GEM_NAME}"
+end
+
+namespace :dev do
+  desc 'Analyze code quality (rubocop, flog, flay)'
+  task :quality do
+    puts 'Analyzing format with rubocop'.blue
+    system 'bundle exec rubocop'
+
+    puts 'Checking code quality. Lower is better'.blue
+    system 'bundle exec flog lib/'
+
+    puts 'Checking code duplication. Prime to refactor'.blue
+    system 'bundle exec flay lib/'
+  end
 end
 
 namespace :doc do
