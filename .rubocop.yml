@@ -1,0 +1,7 @@
+AllCops:
+  TargetRubyVersion: 2.5
+
+Metrics/BlockLength:
+  Exclude:
+    - '**/*.rake'
+    - 'test/**/*.rb'
