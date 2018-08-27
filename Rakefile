@@ -100,15 +100,31 @@ namespace :loop do # rubocop:disable Metrics/BlockLength
   end
 
   def looping(cmd)
-    fswatch_cmd = 'fswatch -0 -e .git/ -e *.gem -e logs -e .yardoc -l 1 .'
-    xargs_cmd = "xargs -0 -I {} sh -c \"echo 'File: {}' && %s\""
-    looping_cmd = "#{fswatch_cmd} |  #{xargs_cmd}"
+    exclude = '-e Gemfile.lock -e .git/ -e *.gem -e logs -e .yardoc -e bundle/'
+    fswatch_cmd = "fswatch -0 #{exclude} -l 1 ."
 
+    xargs_cmd = "xargs -0 -I {} sh -c \"echo 'File: {}' && %s\""
+
+    looping_cmd = "#{fswatch_cmd} |  #{xargs_cmd}"
     system format(looping_cmd.to_s, cmd)
   end
 
-  IGNORED_MESSAGE = 'Ignores .git/, logs/, .yardoc/, and gems created.'\
-                    'Watches every 1 seconds'
+  IGNORED_MESSAGE = 'Ignores .git/, Gemfile.lock, logs/, .yardoc/, bundle/, '\
+                    'and gems created. Watches every 1 seconds'
+
+  desc 'Repeatedly see dev:quality on file changes'
+  task :"dev:quality" do
+    looper?
+    puts "Analyzing dev:quality on file changes. #{IGNORED_MESSAGE}".blue
+    looping('rake dev:quality')
+  end
+
+  desc 'Repeatedly show documentation coverage on file changes'
+  task :"doc:coverage" do
+    looper?
+    puts "Showing undocumented code on file changes. #{IGNORED_MESSAGE}".blue
+    looping('rake doc:coverage')
+  end
 
   desc 'Repeatedly installs the gem on file changes'
   task :install do
@@ -122,13 +138,6 @@ namespace :loop do # rubocop:disable Metrics/BlockLength
     looper?
     puts "Running tests on file changes. #{IGNORED_MESSAGE}".blue
     looping('rake test')
-  end
-
-  desc 'Repeatedly show documentation coverage on file changes'
-  task :"doc:coverage" do
-    looper?
-    puts "Showing undocumented code on file changes. #{IGNORED_MESSAGE}".blue
-    looping('rake doc:coverage')
   end
 end
 
