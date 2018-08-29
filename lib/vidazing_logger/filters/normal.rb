@@ -16,7 +16,6 @@ module VidazingLogger
           :info,
           :warn
       end
-
     end
   end
 end

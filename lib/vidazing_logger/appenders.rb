@@ -8,6 +8,5 @@ module VidazingLogger
   #
   # @api private
   module Appenders
-
   end
 end

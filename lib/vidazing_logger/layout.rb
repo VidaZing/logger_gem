@@ -9,13 +9,12 @@ module VidazingLogger
   class LayoutPattern
     attr_reader :layout
 
-    def initialize(color_scheme_name)
+    def initialize(color_scheme_id:)
       @layout = Logging.layouts.pattern \
         pattern: '[%d] %-5l %c: %m\n',
         # ISO8601 without the 'T'
         date_pattern: '%Y-%m-%d %H:%M:%S',
-        color_scheme: color_scheme_name
+        color_scheme: color_scheme_id
     end
-
   end
 end

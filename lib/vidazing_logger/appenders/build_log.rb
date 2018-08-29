@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require 'vidazing_logger/color_scheme'
+require 'vidazing_logger/colors/normal_color_scheme'
 require 'vidazing_logger/filters/normal'
+require 'vidazing_logger/appenders/log'
 require 'vidazing_logger/appenders'
 require 'logging'
 
@@ -10,27 +11,13 @@ module VidazingLogger
     # Appender writing to 'logs/build.log'
     #
     # @api private
-    class BuildLog
-      attr_reader :appender
+    class BuildLog < Log
+      def initialize(log_dir:)
+        @filter = VidazingLogger::Filters::Normal.new.filter
+        @color_scheme_id = VidazingLogger::Colors::NormalColorScheme.id
 
-      def initialize(log_dir)
-        build_log_path = "#{log_dir}/build.log"
-
-        color_scheme_name = 'vidazing_stdout'
-        VidazingLogger::ColorScheme.create(color_scheme_name, date_color: :blue)
-
-        build_log_appender_name = build_log_path
-        @appender =Logging.appenders.rolling_file \
-          build_log_appender_name,
-          layout: VidazingLogger::LayoutPattern.new(color_scheme_name).layout,
-          age: 'daily',
-          keep: 7,
-          filters: VidazingLogger::Filters::Normal.new.filter
-
-        Logging.appenders[build_log_appender_name]
+        super(log_dir: log_dir, name: 'build')
       end
-
     end
   end
 end
-

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'vidazing_logger/color_scheme'
+require 'vidazing_logger/colors/error_color_scheme'
 require 'vidazing_logger/filters/error'
 require 'vidazing_logger/appenders'
 require 'logging'
@@ -10,27 +10,13 @@ module VidazingLogger
     # Appender writing to 'logs/error.log'
     #
     # @api private
-    class ErrorLog
-      attr_reader :appender
+    class ErrorLog < Log
+      def initialize(log_dir:)
+        @filter = VidazingLogger::Filters::Error.new.filter
+        @color_scheme_id = VidazingLogger::Colors::ErrorColorScheme.id
 
-      def initialize(log_dir)
-        error_log_path = "#{log_dir}/error.log"
-
-        color_scheme_name = 'vidazing_stderr'
-        VidazingLogger::ColorScheme.create(color_scheme_name, date_color: :red)
-
-        error_log_appender_name = error_log_path
-        @appender =Logging.appenders.rolling_file \
-          error_log_appender_name,
-          layout: VidazingLogger::LayoutPattern.new(color_scheme_name).layout,
-          age: 'daily',
-          keep: 7,
-          filters: VidazingLogger::Filters::Error.new.filter
-
-        Logging.appenders[error_log_appender_name]
+        super(log_dir: log_dir, name: 'error')
       end
-
     end
   end
 end
-

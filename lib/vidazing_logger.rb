@@ -37,10 +37,10 @@ module VidazingLogger
       VidazingLogger.initialize
 
       stdout = VidazingLogger::Appenders::Stdout.new
-      build_log = VidazingLogger::Appenders::BuildLog.new(LOG_DIR)
+      build_log = VidazingLogger::Appenders::BuildLog.new(log_dir: LOG_DIR)
 
       stderr = VidazingLogger::Appenders::Stderr.new
-      error_log = VidazingLogger::Appenders::ErrorLog.new(LOG_DIR)
+      error_log = VidazingLogger::Appenders::ErrorLog.new(log_dir: LOG_DIR)
 
       log = Logging.logger[name]
       log.add_appenders \

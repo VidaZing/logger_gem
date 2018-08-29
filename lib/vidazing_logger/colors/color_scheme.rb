@@ -6,7 +6,9 @@ module VidazingLogger
   # Set logging colors
   #
   # @api private
-  module ColorScheme
+  class ColorScheme
+    attr_reader :name
+
     def self.create(name, date_color:) # rubocop:disable Metrics/MethodLength, Metrics/LineLength
       # Logging holds the color scheme reference
       Logging.color_scheme(
@@ -24,4 +26,3 @@ module VidazingLogger
     end
   end
 end
-

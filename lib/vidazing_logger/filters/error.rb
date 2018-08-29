@@ -15,7 +15,6 @@ module VidazingLogger
           :error,
           :fatal
       end
-
     end
   end
 end
