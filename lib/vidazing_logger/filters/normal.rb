@@ -11,10 +11,15 @@ module VidazingLogger
       attr_reader :filter
 
       def initialize
+        # Logging::Filters::Level.new bug:
+        # @filter has nil levels set on the first invocation
+        #   :debug,
+        #   :info,
+        #   :warn
         @filter = Logging::Filters::Level.new \
-          :debug,
-          :info,
-          :warn
+          0,
+          1,
+          2
       end
     end
   end

@@ -2,9 +2,9 @@
 
 require 'vidazing_logger/version'
 require 'vidazing_logger/appenders/stdout'
-require 'vidazing_logger/appenders/build_log'
+require 'vidazing_logger/appenders/log/build'
 require 'vidazing_logger/appenders/stderr'
-require 'vidazing_logger/appenders/error_log'
+require 'vidazing_logger/appenders/log/error'
 
 require 'logging'
 
