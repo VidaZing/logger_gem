@@ -14,10 +14,6 @@ class TestNAME < Test::Unit::TestCase
     FileUtils.rm_rf(LOG_DIR)
   end
 
-  def test_sample
-    assert_equal(4, 2 + 2)
-  end
-
   def test_initclean
     assert(!Dir.exist?(LOG_DIR))
 

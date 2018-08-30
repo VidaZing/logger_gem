@@ -29,6 +29,8 @@ Gem::Specification.new do |s| # rubocop:disable Metrics/BlockLength
   s.add_development_dependency 'flog', '4.6.2'
   s.add_development_dependency 'pry', '0.10.4'
   s.add_development_dependency 'pry-byebug', '3.6.0'
+  s.add_development_dependency 'pry-rescue', '1.4.5'
+  s.add_development_dependency 'pry-stack_explorer', '0.4.9.2'
   s.add_development_dependency 'rainbow', '3.0.0'
   s.add_development_dependency 'rake', '12.3.1'
   s.add_development_dependency 'rspec', '3.8.0'

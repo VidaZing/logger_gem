@@ -1,63 +1,23 @@
 # frozen_string_literal: true
 
-require 'logging'
+require 'vidazing_logger/appenders/basic'
+require 'vidazing_logger/appenders/type'
+require 'vidazing_logger/colors/error_color_scheme'
+require 'vidazing_logger/filters/error'
 
-# Determines how to log messages. Attaches to Logging.logger
-# @api private
 module VidazingLogger
   module Appenders
-    # Appender writing to STDERR and 'logs/error.log'
+    # Appender writing to STDERR
+    #
     # @api private
-    module Stderr
-      class << self
-        APPENDER_STDERR = 'STDERR'
-        def stderr_appender
-          Logging.appenders.stderr \
-            APPENDER_STDERR,
-            layout: readable_error_layout_pattern,
-            level: :error
-        end
+    class Stderr < Appenders::Basic
+      def initialize
+        @color_scheme_id = VidazingLogger::Colors::ErrorColorScheme.id
+        @filter = VidazingLogger::Filters::Error.new.filter
 
-        def error_log_appender(log_dir)
-          error_log_path = "#{log_dir}/error.log"
-
-          appender_error_log = error_log_path
-          Logging.appenders.rolling_file \
-            appender_error_log,
-            layout: readable_error_layout_pattern,
-            age: 'daily',
-            keep: 7,
-            level: :error
-
-          Logging.appenders[appender_error_log]
-        end
-
-        private
-
-        # ----- BUILD STDERR + LOG -----
-
-        # Logging holds the color scheme reference
-        ERROR_LOG_COLOR_SCHEME = 'bright_error'
-        Logging.color_scheme(
-          ERROR_LOG_COLOR_SCHEME,
-          levels: {
-            info: :green,
-            warn: :yellow,
-            error: :red,
-            fatal: %i[white on_red]
-          },
-          date: :red,
-          logger: :cyan,
-          message: :magenta
-        )
-
-        def readable_error_layout_pattern
-          Logging.layouts.pattern \
-            pattern: '[%d] %-5l %c: %m\n',
-            # ISO8601 without the 'T'
-            date_pattern: '%Y-%m-%d %H:%M:%S',
-            color_scheme: ERROR_LOG_COLOR_SCHEME
-        end
+        appender_type = Appenders::Type::ID_STDERR
+        appender_id = self.class.name
+        super(type: appender_type, id: appender_id)
       end
     end
   end
