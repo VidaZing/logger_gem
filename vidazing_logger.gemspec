@@ -23,6 +23,7 @@ Gem::Specification.new do |s| # rubocop:disable Metrics/BlockLength
 
   s.add_runtime_dependency('logging', '2.2.2')
 
+  s.add_development_dependency 'awesome_print', '1.8.0'
   s.add_development_dependency 'byebug', '10.0.2'
   s.add_development_dependency 'coveralls', '0.8.22'
   s.add_development_dependency 'flay', '2.12.0'

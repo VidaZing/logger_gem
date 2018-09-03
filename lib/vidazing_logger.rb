@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
-require 'vidazing_logger/version'
-require 'vidazing_logger/appenders/stdout'
-require 'vidazing_logger/appenders/log/build'
-require 'vidazing_logger/appenders/stderr'
-require 'vidazing_logger/appenders/log/error'
-
-require 'logging'
+require 'vidazing_logger/logger_builder'
 
 # Namespace for the convenience method to create a new logger
 #
@@ -23,6 +17,7 @@ module VidazingLogger
     end
 
     # Deletes the 'logs/' directory
+    # @since 0.1.0
     def clean
       FileUtils.remove_dir(LOG_DIR, true)
     end
@@ -33,23 +28,17 @@ module VidazingLogger
     #
     # @param name [String] Logger name used in messages
     # @return [Logging.logger] See https://github.com/TwP/logging/blob/master/lib/logging/logger.rb
+    # @since 0.1.0
     def logger(name = 'VidaZing')
       VidazingLogger.initialize
 
-      stdout = VidazingLogger::Appenders::Stdout.new
-      build_log = VidazingLogger::Appenders::BuildLog.new(log_dir: LOG_DIR)
-
-      stderr = VidazingLogger::Appenders::Stderr.new
-      error_log = VidazingLogger::Appenders::ErrorLog.new(log_dir: LOG_DIR)
-
-      log = Logging.logger[name]
-      log.add_appenders \
-        stdout.appender,
-        build_log.appender,
-        stderr.appender,
-        error_log.appender
-
-      log
+      LoggerBuilder.build(name: name) do |builder|
+        builder
+          .add_stdout
+          .add_build_log(log_dir: LOG_DIR)
+          .add_stderr
+          .add_error_log(log_dir: LOG_DIR)
+      end
     end
   end
 end
