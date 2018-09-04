@@ -14,9 +14,6 @@ logs/
 /test/version_tmp/
 /tmp/
 
-# Testing
-.simplecov
-
 # Used by dotenv library to load environment variables.
 # .env
 
