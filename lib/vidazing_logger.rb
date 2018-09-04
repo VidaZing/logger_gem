@@ -13,6 +13,9 @@ module VidazingLogger
     DEFAULT_LOGGER_NAME = 'VidaZing'
 
     # Deletes the 'logs/' directory
+    #
+    # @param log_dir [String] Directory to delete
+    # @return nil
     # @since 0.1.0
     def clean(log_dir = LOG_DIR)
       @vidazing_logger = VidazingLogger::Logger.new \
@@ -30,7 +33,7 @@ module VidazingLogger
     # @param log_dir [String] Directory to write logs in
     # @see VidazingLogger::Logger#build
     # @return [Logging.logger] See https://github.com/TwP/logging/blob/master/lib/logging/logger.rb
-    # @since 0.1.0
+    # @since 0.2.0
     def logger(name = DEFAULT_LOGGER_NAME, log_dir = LOG_DIR)
       @vidazing_logger = VidazingLogger::Logger.new \
         log_dir,

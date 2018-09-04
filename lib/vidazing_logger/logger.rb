@@ -8,7 +8,15 @@ module VidazingLogger
   #
   # @since 0.2.0
   class Logger
-    attr_reader :log_dir, :name
+    # Where to write logs to
+    #
+    # @return [String] where to write logs to
+    attr_reader :log_dir
+
+    # Use in Logging.logger
+    #
+    # @return [String] name
+    attr_reader :name
 
     # Creates the 'logs/' directory
     #

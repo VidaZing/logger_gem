@@ -19,7 +19,7 @@ Writes to rolling log files and the corresponding IO pipe.
 1. In your `Gemfile`, add the `vidazing_logger` gem:
 
     ```ruby
-    gem 'vidazing_logger', '~> 0.1'
+    gem 'vidazing_logger', '~> 0.2'
     ```
 
 2. In your `shell`, run:
@@ -44,7 +44,20 @@ See `rake -T`
 ```ruby
 require 'vidazing_logger'
 
-logger = VidazingLogger.logger("OPTIONAL_LOGGER_NAME")
+# Easy
+optional_name = "DearDiary"
+optional_log_dir = 'logs'
+logger = VidazingLogger.logger(optional_name, optional_log_dir)
+
+# Customized. See VidazingLogger::Logger#build
+LoggerBuilder.build(name: @name) do |builder|
+  builder
+    .add_stdout
+    .add_build_log(log_dir: @log_dir)
+    .add_stderr
+    .add_error_log(log_dir: @log_dir)
+end
+
 ```
 
 ### Binary
