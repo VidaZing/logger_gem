@@ -39,4 +39,7 @@ Gem::Specification.new do |s| # rubocop:disable Metrics/BlockLength
   s.add_development_dependency 'simplecov', '0.16.1'
   s.add_development_dependency 'test-unit', '3.2.8'
   s.add_development_dependency 'yard', '0.9.16'
+
+  # Note: Mocha says to load this after test-unit
+  s.add_development_dependency 'mocha', '1.7.0'
 end

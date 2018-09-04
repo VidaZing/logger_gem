@@ -6,11 +6,13 @@ module VidazingLogger
   # Filter logs by level severity
   #
   # @api private
+  # @since 0.2.0
   module Filters
     # Filter log messages strictly by Levels. Levels...
     #
     # @see Levels::ALL
     # @api private
+    # @since 0.2.0
     module Levels
       class << self
         ALL = %i[debug info warn error fatal].freeze

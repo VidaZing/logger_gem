@@ -59,7 +59,8 @@ module VidazingLogger
         # in an array and directly pass those.
         #
         # Instead, to isolate the Logging gem reference, we hack
-        level0, level1, level2, level3 = *@vidazing_appender.filter_levels
+        level0, level1, level2, level3, level4 =
+          *@vidazing_appender.filter_levels
 
         if level1.nil?
           Logging::Filters::Level.new(level0)

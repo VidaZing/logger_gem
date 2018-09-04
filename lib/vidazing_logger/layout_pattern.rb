@@ -4,6 +4,7 @@ module VidazingLogger
   # Determines the format for the logger messages
   #
   # @api private
+  # @since 0.2.0
   class LayoutPattern
     attr_reader :layout
 

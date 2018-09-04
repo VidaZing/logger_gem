@@ -9,6 +9,7 @@ module VidazingLogger
     # Appender writing to 'logs/build.log'
     #
     # @api private
+    # @since 0.2.0
     class BuildLog < Log
       def initialize(log_dir:)
         super \

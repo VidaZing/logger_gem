@@ -4,6 +4,7 @@ module VidazingLogger
   # Set logging colors
   #
   # @api private
+  # @since 0.2.0
   class ColorScheme
     attr_reader :name, :scheme
 

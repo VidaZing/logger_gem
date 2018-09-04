@@ -7,6 +7,7 @@ module VidazingLogger
     # Appender writing to log files
     #
     # @api private
+    # @since 0.2.0
     class Log < Appender
       attr_reader :log_dir, :name
 

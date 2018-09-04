@@ -9,6 +9,7 @@ module VidazingLogger
     # Appender writing to STDERR
     #
     # @api private
+    # @since 0.1.0
     class Stderr < Appender
       def initialize
         super \

@@ -9,6 +9,7 @@ module VidazingLogger
     # Appender writing to 'logs/error.log'
     #
     # @api private
+    # @since 0.2.0
     class ErrorLog < Log
       def initialize(log_dir:)
         super \
