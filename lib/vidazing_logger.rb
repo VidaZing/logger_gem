@@ -13,6 +13,9 @@ module VidazingLogger
     DEFAULT_LOGGER_NAME = 'VidaZing'
 
     # Deletes the 'logs/' directory
+    #
+    # @param log_dir [String] Directory to delete
+    # @return nil
     # @since 0.1.0
     def clean(log_dir = LOG_DIR)
       @vidazing_logger = VidazingLogger::Logger.new \
