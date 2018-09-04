@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'vidazing_logger/logger_builder'
 require 'vidazing_logger'
 
 require 'optparse'
@@ -13,10 +14,30 @@ require 'ostruct'
 class VidazingOptions
   attr_reader :level, :clean
 
+  # Store properties used by +VidazingLogger+
   def initialize
     @level = 'info'
     @clean = false
+    @file_io = false
+    @verbose = false
+
     @options_parser = create_options_parser
+  end
+
+  # If file_io is true the logger will write to 'logs/'
+  #
+  # @return file_io [TrueClass, FalseClass]
+  # @since 0.2.1
+  def file_io?
+    @file_io
+  end
+
+  # Show extra debug information for this script
+  #
+  # @return verbose [TrueClass, FalseClass]
+  # @since 0.2.1
+  def verbose?
+    @verbose
   end
 
   def create_options_parser # rubocop:disable Metrics/MethodLength
@@ -39,6 +60,17 @@ class VidazingOptions
       opts.on_tail('-c', '--clean', 'Remove the logs/ directory') do
         @clean = true
       end
+
+      file_io_help =
+        'Enables writing to the \'logs/\' ' \
+        'directory on the file system'
+      opts.on_tail('-f', '--file-io', file_io_help) do
+        @file_io = true
+      end
+
+      opts.on_tail('-v', '--verbose', 'Show debug messages') do
+        @verbose = true
+      end
     end
   end
 
@@ -47,17 +79,48 @@ class VidazingOptions
   end
 end
 
-vidazing_options = VidazingOptions.new
-vidazing_options.parse(ARGV)
+# Handles options
+class Main
+  def initialize
+    @vidazing_options = VidazingOptions.new
+    @vidazing_options.parse(ARGV)
 
-if vidazing_options.clean
-  puts 'Cleaning the logs/ directory'
-  VidazingLogger.clean
+    if @vidazing_options.clean
+      puts 'Cleaning the logs/ directory'
+      VidazingLogger.clean
+    end
+
+    return if ARGV.empty?
+
+    message = ARGV.join(' ')
+    log_message(message)
+  end
+
+  def log_message(message)
+    if @vidazing_options.file_io?
+      verbose_log('Logging to \'logs\' directory + STDERR + STDOUT')
+
+      log = VidazingLogger.logger
+    else
+      verbose_log 'Logging to STDERR + STDOUT'
+
+      log = build_stdio_logger
+    end
+
+    log.public_send(@vidazing_options.level, message)
+  end
+
+  def build_stdio_logger
+    VidazingLogger::LoggerBuilder.build(name: 'Vidazing') do |builder|
+      builder
+        .add_stdout
+        .add_stderr
+    end
+  end
+
+  def verbose_log(message)
+    puts message if @vidazing_options.verbose?
+  end
 end
 
-unless ARGV.empty?
-  message = ARGV.join(' ')
-
-  log = VidazingLogger.logger
-  log.public_send(vidazing_options.level, message)
-end
+Main.new
