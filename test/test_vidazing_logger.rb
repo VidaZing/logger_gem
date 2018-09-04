@@ -1,26 +1,27 @@
 # frozen_string_literal: true
 
-# Test Coverage
+# Test Coverage uses .simplecov
 require 'simplecov'
-SimpleCov.start
 
 require './lib/vidazing_logger.rb'
 require 'test/unit'
 
-class TestNAME < Test::Unit::TestCase
-  LOG_DIR = 'logs'
+class TestVidazingLogger < Test::Unit::TestCase
+  LOG_DIR = "#{name}_logs"
+  NAME = name
 
   def setup
     FileUtils.rm_rf(LOG_DIR)
   end
 
-  def test_initclean
+  def test_init_clean
     assert(!Dir.exist?(LOG_DIR))
 
-    VidazingLogger.initialize
+    VidazingLogger.logger(NAME, LOG_DIR)
+    assert(File.writable?(LOG_DIR))
     assert(Dir.exist?(LOG_DIR))
 
-    VidazingLogger.clean
+    VidazingLogger.clean(LOG_DIR)
     assert(!Dir.exist?(LOG_DIR))
   end
 

@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
-require 'vidazing_logger/version'
-require 'vidazing_logger/appenders/stdout'
-require 'vidazing_logger/appenders/log/build'
-require 'vidazing_logger/appenders/stderr'
-require 'vidazing_logger/appenders/log/error'
-
-require 'logging'
+require 'vidazing_logger/logger'
 
 # Namespace for the convenience method to create a new logger
 #
@@ -16,15 +10,16 @@ module VidazingLogger
   class << self
     # [String]
     LOG_DIR = 'logs'
-
-    # Creates the 'logs/' directory
-    def initialize
-      Dir.mkdir(LOG_DIR) unless Dir.exist?(LOG_DIR)
-    end
+    DEFAULT_LOGGER_NAME = 'VidaZing'
 
     # Deletes the 'logs/' directory
-    def clean
-      FileUtils.remove_dir(LOG_DIR, true)
+    # @since 0.1.0
+    def clean(log_dir = LOG_DIR)
+      @vidazing_logger = VidazingLogger::Logger.new \
+        log_dir,
+        name: DEFAULT_LOGGER_NAME
+
+      @vidazing_logger.clean
     end
 
     # Create a Logger with 4 Appenders.
@@ -32,24 +27,16 @@ module VidazingLogger
     # STDOUT + 'logs/build.log'
     #
     # @param name [String] Logger name used in messages
+    # @param log_dir [String] Directory to write logs in
+    # @see VidazingLogger::Logger#build
     # @return [Logging.logger] See https://github.com/TwP/logging/blob/master/lib/logging/logger.rb
-    def logger(name = 'VidaZing')
-      VidazingLogger.initialize
+    # @since 0.1.0
+    def logger(name = DEFAULT_LOGGER_NAME, log_dir = LOG_DIR)
+      @vidazing_logger = VidazingLogger::Logger.new \
+        log_dir,
+        name: name
 
-      stdout = VidazingLogger::Appenders::Stdout.new
-      build_log = VidazingLogger::Appenders::BuildLog.new(log_dir: LOG_DIR)
-
-      stderr = VidazingLogger::Appenders::Stderr.new
-      error_log = VidazingLogger::Appenders::ErrorLog.new(log_dir: LOG_DIR)
-
-      log = Logging.logger[name]
-      log.add_appenders \
-        stdout.appender,
-        build_log.appender,
-        stderr.appender,
-        error_log.appender
-
-      log
+      @vidazing_logger.build
     end
   end
 end
