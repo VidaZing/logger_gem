@@ -62,7 +62,7 @@ end
 
 ### Binary
 
-`vidazing_logger` for all your stand alone shell logging needs. We should probably let you disable the `logs/` file logging... Moving along!
+`vidazing_logger` for all your stand alone shell logging needs. ~~We should probably let you disable the `logs/` file logging... Moving along!~~ _`0.2.1` defaults to logging to STDERR / STDOUT. See --help._
 
 Install with `gem install vidazing_logger`
 
